@@ -3,6 +3,7 @@ package com.ms.testcases;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.ms.base.BaseClass;
@@ -21,12 +22,12 @@ public class ProductDetailTest extends BaseClass{
 
 	ProductDetailPage productDetailPage;
 
+	@Parameters("browser")
 	@BeforeMethod
-	public void setup()
+	public void setup(String browser)
 	{
-		launchApp("Chrome");
+		launchApp(browser);
 	}
-
 
 	@Test
 	public void verifyProductDetailsInProductDetailPage() throws Exception
@@ -37,21 +38,31 @@ public class ProductDetailTest extends BaseClass{
 
 		homePage=new HomePage();
 		womenPage=new WomenPage();
+        productDetailPage=new ProductDetailPage();
 
-		productDetailPage=new ProductDetailPage();
+        Log.info("Clicking on womens Tab");
 
 		homePage.clickOnWomenLink();
 		
-		womenPage.clickOnSort();
+		Log.info("Clicking on Sorting");
+
+		womenPage.clickOnSort("Sort by average rating");
 
 		String productName=womenPage.FirstProductName();
 		String productPrice=womenPage.FirstProductPrice();
+		
+		Log.info("Clicking on First product on listing");
 		womenPage.clickOnFirstProduct();
 		
 		String productNameInDetailPage=productDetailPage.ProductNameInProductDetailPage();
 
 		String productPriceInDetailPage=productDetailPage.ProductPriceInProductDetailPage();
 
+		//Product detail check in product detail page 
+		
+        Log.info("Verifying product details in product details page");
+
+		
 		Assert.assertEquals(productNameInDetailPage,productName);
 		Assert.assertEquals(productPriceInDetailPage, productPrice);
 		

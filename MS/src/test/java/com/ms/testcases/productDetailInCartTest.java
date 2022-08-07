@@ -3,6 +3,7 @@ package com.ms.testcases;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.ms.base.BaseClass;
@@ -22,11 +23,12 @@ public class productDetailInCartTest extends BaseClass{
 
 	ProductDetailPage productDetailPage;
 	CartPage cartPage;
-
+    
+	@Parameters("browser")
 	@BeforeMethod
-	public void setup()
+	public void setup(String browser)
 	{
-		launchApp("Chrome");
+		launchApp(browser);
 	}
 
 
@@ -43,12 +45,21 @@ public class productDetailInCartTest extends BaseClass{
         
         String addingQuantity=prop.getProperty("productQuantity");
         
+        Log.info("Clicking on womens Tab");
+        
 		homePage.clickOnWomenLink();
 		
-		womenPage.clickOnSort();
+		
+        Log.info("Clicking on Sorting");
+
+		womenPage.clickOnSort("Sort by average rating");
 
 		String productName=womenPage.FirstProductName();
 		String productPrice=womenPage.FirstProductPrice();
+		
+		
+        Log.info("Clicking on First product on listing");
+
 		
 		womenPage.clickOnFirstProduct();
 		
@@ -56,10 +67,16 @@ public class productDetailInCartTest extends BaseClass{
 
 		String productPriceInDetailPage=productDetailPage.ProductPriceInProductDetailPage();
 		
-		
+        Log.info("Adding quantity");
+
 		productDetailPage.addingQuantity(addingQuantity);
 		
+        Log.info("Clicking on Add to cart");
+
 		productDetailPage.clickingOnAddToCart();
+		
+        Log.info("Clicking on View cart");
+
 		
 		productDetailPage.clickingOnViewCart();
 		
@@ -72,6 +89,9 @@ public class productDetailInCartTest extends BaseClass{
 	    
 	    
         //Product Details Check in cart 
+	    
+        Log.info("Verifying product details in cart");
+
 	    
 		Assert.assertEquals(ProductNameInProductCartPage, productNameInDetailPage);
 		Assert.assertEquals(ProductPriceInProductCartPage,productPriceInDetailPage);
@@ -89,13 +109,23 @@ public class productDetailInCartTest extends BaseClass{
 		
 		Assert.assertEquals(actualTotalPrice, expectedTotal);
 		
+		//Entering Address 
+		
+        Log.info("Changing Address");
+
 		
 		cartPage.clickOnaddress();
 		cartPage.selectingCountry();
 		cartPage.selectingState();
 		cartPage.enteringCity();
 		cartPage.enteringPostalCode();
+		
+        Log.info("Clicking on update button");
+
 		cartPage.clickOnUpdate();
+		
+        Log.info("Clicking on Proceed to checkout");
+
 		cartPage.clickOnProceedTocheckOut();
 
 	    
@@ -108,13 +138,13 @@ public class productDetailInCartTest extends BaseClass{
 
 
 
-	/*
-	 * @AfterMethod
-	 * 
-	 * public void tearDown() {
-	 * 
-	 * getDriver().quit(); }
-	 */
+	
+	  @AfterMethod
+	  
+	  public void tearDown() {
+	  
+	  getDriver().quit(); }
+	 
 
 
 }

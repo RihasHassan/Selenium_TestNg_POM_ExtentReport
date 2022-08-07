@@ -32,12 +32,12 @@ public class WomenPage extends BaseClass{
 
 	}
 
-	public void clickOnSort()
+	public void clickOnSort(String sortBy)    
 
 	{
 		action.highLight(getDriver(), sorting);
 
-		action.selectByVisibleText("Sort by average rating", sorting);
+		action.selectByVisibleText(sortBy, sorting);
 	}
 
 
